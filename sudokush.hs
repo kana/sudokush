@@ -21,9 +21,25 @@
 --     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- }}}
 
+import Data.Array
 import System.Exit
 import System.IO
 import System.IO.Error
+
+
+
+
+type RowIndex = Int
+type ColumnIndex = Int
+data Value = V0 | V1 | V2 | V3 | V4 | V5 | V6 | V7 | V8 | V9
+data Grid = Grid (Array (RowIndex, ColumnIndex) Value)
+
+makeEmptyGrid :: Grid
+makeEmptyGrid =
+  Grid $ array ((1, 1), (9, 9)) [((r, c), V0) | r <- [1..9], c <- [1..9]]
+
+putGrid :: Grid -> (RowIndex, ColumnIndex) -> Value -> Grid
+putGrid (Grid a) (r, c) v = Grid $ a // [((r, c), v)]
 
 
 
