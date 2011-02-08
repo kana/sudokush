@@ -44,7 +44,7 @@ putGrid (Grid a) (r, c) v = Grid $ a // [((r, c), v)]
 
 
 
-data ShellState = ShellState
+data ShellState = ShellState Grid
 
 eval :: ShellState -> String -> IO ShellState
 eval s line = evalWords s $ words line
@@ -69,7 +69,7 @@ repl s = putStr ">>> " >>
                        then putStr "\n" >> exitWith ExitSuccess
                        else ioError e
 
-main = repl ShellState
+main = repl $ ShellState $ makeEmptyGrid
 
 -- __END__
 -- vim: foldmethod=marker
