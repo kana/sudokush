@@ -21,8 +21,39 @@
 --     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 -- }}}
 
+import System.Exit
+import System.IO
+import System.IO.Error
 
 
+
+
+data ShellState = ShellState
+
+eval :: ShellState -> String -> IO ShellState
+eval s line = evalWords s $ words line
+
+evalWords :: ShellState -> [String] -> IO ShellState
+evalWords s [] = return s
+evalWords s xs = putStrLn ("Unknown command: `" ++ unwords xs ++ "'") >>
+                    return s
+
+
+
+
+repl :: ShellState -> IO ()
+repl s = putStr ">>> " >>
+         hFlush stdout >>
+         getLine `catch` onEof >>= eval s >>= \x -> (
+           putStrLn "" >>
+           repl x
+         )
+         where
+           onEof e = if isEOFError e
+                       then putStr "\n" >> exitWith ExitSuccess
+                       else ioError e
+
+main = repl ShellState
 
 -- __END__
 -- vim: foldmethod=marker
