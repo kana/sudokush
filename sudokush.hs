@@ -61,9 +61,9 @@ repl :: ShellState -> IO ()
 repl s = putStr ">>> " >>
          hFlush stdout >>
          getLine `catch` onEof >>=
-         eval s >>= \x ->
+         eval s >>= \s' ->
          putStrLn "" >>
-         repl x
+         repl s'
          where
            onEof e = if isEOFError e
                        then putStr "\n" >> exitWith ExitSuccess
