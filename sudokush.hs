@@ -65,9 +65,9 @@ repl s = putStr ">>> " >>
          putStrLn "" >>
          repl s'
          where
-           onEof e = if isEOFError e
-                       then putStr "\n" >> exitWith ExitSuccess
-                       else ioError e
+           onEof e
+             | isEOFError e = putStr "\n" >> exitWith ExitSuccess
+             | otherwise = ioError e
 
 main = repl $ ShellState $ makeEmptyGrid
 
