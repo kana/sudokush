@@ -62,7 +62,7 @@ repl s = putStr ">>> " >>
          hFlush stdout >>
          getLine `catch` onEof >>=
          eval s >>= \s' ->
-         putStrLn "" >>
+         putStr "\n" >>
          repl s'
          where
            onEof e
