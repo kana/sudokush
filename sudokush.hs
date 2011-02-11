@@ -60,10 +60,10 @@ evalWords s xs = putStrLn ("Unknown command: `" ++ unwords xs ++ "'") >>
 repl :: ShellState -> IO ()
 repl s = putStr ">>> " >>
          hFlush stdout >>
-         getLine `catch` onEof >>= eval s >>= \x -> (
-           putStrLn "" >>
-           repl x
-         )
+         getLine `catch` onEof >>=
+         eval s >>= \x ->
+         putStrLn "" >>
+         repl x
          where
            onEof e = if isEOFError e
                        then putStr "\n" >> exitWith ExitSuccess
