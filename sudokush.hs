@@ -52,7 +52,7 @@ eval s line = evalWords s $ words line
 evalWords :: ShellState -> [String] -> IO ShellState
 evalWords s [] = return s
 evalWords s xs = putStrLn ("Unknown command: `" ++ unwords xs ++ "'") >>
-                    return s
+                 return s
 
 
 
