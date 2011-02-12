@@ -25,6 +25,7 @@ module Sudoku (
     Cell,
     ColumnIndex,
     Digit,
+    IndexedCell,
     Puzzle,
     RowIndex,
     SolvingTechnique(..),
@@ -45,6 +46,7 @@ type ColumnIndex = Int
 type CellIndex = (RowIndex, ColumnIndex)
 
 data Cell = Cell ()  -- FIXME: undefined
+type IndexedCell = (CellIndex, Cell)
 data Puzzle = Puzzle ()  -- FIXME: undefined
 data SolvingTechnique =
   RemovingCandidates
@@ -54,10 +56,10 @@ data SolvingTechnique =
 
 
 
-fromList :: [Cell] -> Puzzle
+fromList :: [IndexedCell] -> Puzzle
 fromList = undefined
 
-toList :: Puzzle -> [Cell]
+toList :: Puzzle -> [IndexedCell]
 toList = undefined
 
 parse :: String -> Puzzle
