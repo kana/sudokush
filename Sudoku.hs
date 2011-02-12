@@ -29,6 +29,7 @@ module Sudoku (
     Puzzle,
     RowIndex,
     SolvingTechnique(..),
+    empty,
     fromList,
     parse,
     pp,
@@ -66,6 +67,10 @@ data SolvingTechnique =
 
 
 
+
+empty :: Puzzle
+empty = Puzzle $ Map.fromList [((r, c), (Cell 0 False [1..9]))
+                               | r <- [1..9], c <- [1..9]]
 
 fromList :: [IndexedCell] -> Puzzle
 fromList = undefined
