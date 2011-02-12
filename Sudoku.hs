@@ -79,7 +79,7 @@ fromList ics = Puzzle $ Map.union customSet emptySet
                  customSet = Map.fromList ics
 
 toList :: Puzzle -> [IndexedCell]
-toList = undefined
+toList (Puzzle g) = Map.toList g
 
 parse :: String -> Puzzle
 parse = undefined
