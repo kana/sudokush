@@ -45,7 +45,11 @@ type RowIndex = Int
 type ColumnIndex = Int
 type CellIndex = (RowIndex, ColumnIndex)
 
-data Cell = Cell ()  -- FIXME: undefined
+data Cell = Cell {
+    solution :: Digit,
+    initialp :: Bool,
+    candidates :: [Digit]
+  }
 type IndexedCell = (CellIndex, Cell)
 data Puzzle = Puzzle ()  -- FIXME: undefined
 data SolvingTechnique =
