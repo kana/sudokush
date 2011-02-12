@@ -73,7 +73,10 @@ empty = Puzzle $ Map.fromList [((r, c), (Cell 0 False [1..9]))
                                | r <- [1..9], c <- [1..9]]
 
 fromList :: [IndexedCell] -> Puzzle
-fromList = undefined
+fromList ics = Puzzle $ Map.union customSet emptySet
+               where
+                 emptySet = grid empty
+                 customSet = Map.fromList ics
 
 toList :: Puzzle -> [IndexedCell]
 toList = undefined
