@@ -36,6 +36,9 @@ module Sudoku (
     toList,
   ) where
 
+import Data.Map (Map)
+import qualified Data.Map as Map
+
 
 
 
@@ -51,7 +54,11 @@ data Cell = Cell {
     candidates :: [Digit]
   }
 type IndexedCell = (CellIndex, Cell)
-data Puzzle = Puzzle ()  -- FIXME: undefined
+
+data Puzzle = Puzzle {
+    grid :: Map CellIndex Cell
+  }
+
 data SolvingTechnique =
   RemovingCandidates
   | NakedSingle
