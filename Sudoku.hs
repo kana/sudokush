@@ -93,7 +93,16 @@ toList (Puzzle g) = map unwrap $ Map.toList g
     unwrap (i, cell) = (i, solution cell)
 
 parse :: String -> Puzzle
-parse = undefined
+parse s = fromList $ concat $ map wrap $ zip rs dss
+  where
+    wrap (r, ds) = zipWith (\d c -> ((r, c), d)) ds cs
+    rs = [1..9]
+    cs = [1..9]
+    dss = map (map toInt . map head . words) rows
+    rows = lines s
+    toInt c
+      | c `elem` ['1'..'9'] = read [c]
+      | otherwise = 0
 
 pp :: Puzzle -> String
 pp (Puzzle g) = unlines $ concat $ (slice prows [1..3]
