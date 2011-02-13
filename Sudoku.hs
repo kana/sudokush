@@ -60,6 +60,7 @@ type IndexedCell = (CellIndex, Cell)
 data Puzzle = Puzzle {
     grid :: Grid
   }
+  deriving (Eq)
 type Grid = Map CellIndex Cell
 
 data SolvingTechnique =
