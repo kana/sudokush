@@ -232,9 +232,18 @@ solveByHiddenSingle (Puzzle g0)
     zapEachColumn $
     zapEachRow g0
   where
-    zapEachBox g = g  -- TODO: Implement.
-    zapEachColumn g = g  -- TODO: Implement.
-    zapEachRow g = g  -- TODO: Implement.
+    zapEachBox g = foldr zapHouse g allBoxIndexSets
+    zapEachColumn g = foldr zapHouse g allColumnIndexSets
+    zapEachRow g = foldr zapHouse g allRowIndexSets
+    zapHouse iset g = foldr (zap iset) g [1..9]
+    zap iset d g
+      | found = settle g (fst ic) d
+      | otherwise = g
+      where
+        found = and [not $ null ics, null $ tail ics]
+        ic = head ics
+        ics = filter withCandidate $ zip iset (map (g Map.!) iset)
+        withCandidate (_, c) = d `elem` candidates c
 
 
 
