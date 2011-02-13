@@ -143,6 +143,7 @@ ppCell Cell {solution = s, candidates = cs}
 solve :: SolvingTechnique -> Puzzle -> Puzzle
 solve method
   | method == RemovingCandidates = solveByRemovingCandidates
+  | method == NakedSingle = solveByNakedSingle
   | otherwise = undefined
 
 solveByRemovingCandidates :: Puzzle -> Puzzle
@@ -180,6 +181,18 @@ indicesOfHouse (r0, c0) = [(r, c) | r <- rs, c <- cs]
     ch = (c0 - 1) `div` 3
     rs = [(rh * 3 + 1)..((rh + 1) * 3)]
     cs = [(ch * 3 + 1)..((ch + 1) * 3)]
+
+solveByNakedSingle :: Puzzle -> Puzzle
+solveByNakedSingle (Puzzle g0)
+  = solveByRemovingCandidates $ Puzzle $ foldr zap g0 allCellIndices
+  where
+    zap i g
+      | isNaked = Map.update settle i g
+      | otherwise = g
+      where
+        cs = candidates $ g Map.! i
+        isNaked = and [not $ null cs, null $ tail cs]
+        settle cell = Just cell {solution = head cs, candidates = []}
 
 
 
