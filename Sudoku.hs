@@ -57,8 +57,9 @@ data Cell = Cell {
 type IndexedCell = (CellIndex, Cell)
 
 data Puzzle = Puzzle {
-    grid :: Map CellIndex Cell
+    grid :: Grid
   }
+type Grid = Map CellIndex Cell
 
 data SolvingTechnique =
   RemovingCandidates
