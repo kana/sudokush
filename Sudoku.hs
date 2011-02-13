@@ -69,9 +69,12 @@ data SolvingTechnique =
 
 
 
+allCellIndices :: [CellIndex]
+allCellIndices = [(r, c) | r <- [1..9], c <- [1..9]]
+
 empty :: Puzzle
-empty = Puzzle $ Map.fromList [((r, c), (Cell 0 False [1..9]))
-                               | r <- [1..9], c <- [1..9]]
+empty = Puzzle $ Map.fromList [(i, (Cell 0 False [1..9]))
+                               | i <- allCellIndices]
 
 fromList :: [(CellIndex, Digit)] -> Puzzle
 fromList ids = solve RemovingCandidates $ Puzzle $ Map.union customSet emptySet
@@ -141,10 +144,9 @@ solve RemovingCandidates = solveByRemovingCandidates
 solve _ = undefined
 
 solveByRemovingCandidates :: Puzzle -> Puzzle
-solveByRemovingCandidates (Puzzle g0) = Puzzle $ foldr zapCell g0 is
+solveByRemovingCandidates (Puzzle g0)
+  = Puzzle $ foldr zapCell g0 allCellIndices
   where
-    is :: [CellIndex]
-    is = [(r, c) | r <- [1..9], c <- [1..9]]
     zapCell :: CellIndex -> Grid -> Grid
     zapCell i@(r, c) g
       | d /= 0 = cleanRow r d $ cleanColumn c d $ cleanHouse i d g
