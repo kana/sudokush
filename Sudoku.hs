@@ -132,7 +132,38 @@ ppCell Cell {solution = s, candidates = cs}
 
 
 solve :: SolvingTechnique -> Puzzle -> Puzzle
-solve = undefined
+solve RemovingCandidates = solveByRemovingCandidates
+solve _ = undefined
+
+solveByRemovingCandidates :: Puzzle -> Puzzle
+solveByRemovingCandidates (Puzzle g0) = Puzzle $ foldr zapCell g0 is
+  where
+    is :: [CellIndex]
+    is = [(r, c) | r <- [1..9], c <- [1..9]]
+    zapCell :: CellIndex -> Grid -> Grid
+    zapCell i@(r, c) g
+      | d /= 0 = cleanRow r d $ cleanColumn c d $ cleanHouse i d g
+      | otherwise = g
+      where
+        cell = g Map.! (r, c)
+        d = solution cell
+
+cleanCells :: [CellIndex] -> Digit -> Grid -> Grid
+cleanCells is d g0 = foldr clean g0 is
+  where
+    clean i g = g  -- TODO: Implement
+
+cleanColumn :: ColumnIndex -> Digit -> Grid -> Grid
+cleanColumn c d g = cleanCells [(r, c) | r <- [1..9]] d g
+
+cleanHouse :: CellIndex -> Digit -> Grid -> Grid
+cleanHouse i d g = cleanCells (indicesOfHouse i) d g
+
+cleanRow :: RowIndex -> Digit -> Grid -> Grid
+cleanRow r d g = cleanCells [(r, c) | c <- [1..9]] d g
+
+indicesOfHouse :: CellIndex -> [CellIndex]
+indicesOfHouse i = []  -- TODO: Implement
 
 
 
