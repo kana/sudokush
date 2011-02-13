@@ -65,6 +65,7 @@ data SolvingTechnique =
   RemovingCandidates
   | NakedSingle
   -- TODO: Implement more solving techniques.
+  deriving (Eq)
 
 
 
@@ -140,8 +141,9 @@ ppCell Cell {solution = s, candidates = cs}
 
 
 solve :: SolvingTechnique -> Puzzle -> Puzzle
-solve RemovingCandidates = solveByRemovingCandidates
-solve _ = undefined
+solve method
+  | method == RemovingCandidates = solveByRemovingCandidates
+  | otherwise = undefined
 
 solveByRemovingCandidates :: Puzzle -> Puzzle
 solveByRemovingCandidates (Puzzle g0)
