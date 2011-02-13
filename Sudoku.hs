@@ -146,6 +146,12 @@ solve method
   | method == NakedSingle = solveByNakedSingle
   | otherwise = undefined
 
+settle :: Grid -> CellIndex -> Digit -> Grid
+settle g i d = Map.update toSettledCell i g
+  where
+    toSettledCell cell = Just cell {solution = d, candidates = [d]}
+
+
 solveByRemovingCandidates :: Puzzle -> Puzzle
 solveByRemovingCandidates (Puzzle g0)
   = Puzzle $ foldr zapCell g0 allCellIndices
@@ -182,17 +188,17 @@ indicesOfHouse (r0, c0) = [(r, c) | r <- rs, c <- cs]
     rs = [(rh * 3 + 1)..((rh + 1) * 3)]
     cs = [(ch * 3 + 1)..((ch + 1) * 3)]
 
+
 solveByNakedSingle :: Puzzle -> Puzzle
 solveByNakedSingle (Puzzle g0)
   = solveByRemovingCandidates $ Puzzle $ foldr zap g0 allCellIndices
   where
     zap i g
-      | isNaked = Map.update settle i g
+      | isNaked = settle g i (head cs)
       | otherwise = g
       where
         cs = candidates $ g Map.! i
         isNaked = and [not $ null cs, null $ tail cs]
-        settle cell = Just cell {solution = head cs, candidates = []}
 
 
 
