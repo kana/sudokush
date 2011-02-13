@@ -82,8 +82,10 @@ fromList ids = solve RemovingCandidates $ Puzzle $ Map.union customSet emptySet
                             initialp = True,
                             candidates = if d == 0 then [1..9] else [d]})
 
-toList :: Puzzle -> [IndexedCell]
-toList (Puzzle g) = Map.toList g
+toList :: Puzzle -> [(CellIndex, Digit)]
+toList (Puzzle g) = map unwrap $ Map.toList g
+  where
+    unwrap (i, cell) = (i, solution cell)
 
 parse :: String -> Puzzle
 parse = undefined
