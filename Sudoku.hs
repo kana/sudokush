@@ -81,6 +81,9 @@ allBoxIndexSets = [[(r, c) | r <- [((br - 1) * 3 + 1)..(br * 3)],
                              c <- [((bc - 1) * 3 + 1)..(bc * 3)]]
                    | br <- [1..3], bc <- [1..3]]
 
+allColumnIndexSets :: [[CellIndex]]
+allColumnIndexSets = [[(r, c) | r <- [1..9]] | c <- [1..9]]
+
 empty :: Puzzle
 empty = Puzzle $ Map.fromList [(i, (Cell 0 False [1..9]))
                                | i <- allCellIndices]
