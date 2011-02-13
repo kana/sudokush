@@ -73,11 +73,12 @@ empty :: Puzzle
 empty = Puzzle $ Map.fromList [((r, c), (Cell 0 False [1..9]))
                                | r <- [1..9], c <- [1..9]]
 
-fromList :: [IndexedCell] -> Puzzle
-fromList ics = Puzzle $ Map.union customSet emptySet
-               where
-                 emptySet = grid empty
-                 customSet = Map.fromList ics
+fromList :: [(CellIndex, Digit)] -> Puzzle
+fromList ids = Puzzle $ Map.union customSet emptySet
+  where
+    emptySet = grid empty
+    customSet = Map.fromList $ map wrap ids
+    wrap (i, d) = (i, Cell {solution = d, initialp = True, candidates = []})
 
 toList :: Puzzle -> [IndexedCell]
 toList (Puzzle g) = Map.toList g
