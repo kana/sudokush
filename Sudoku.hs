@@ -165,7 +165,12 @@ cleanRow :: RowIndex -> Digit -> Grid -> Grid
 cleanRow r d g = cleanCells [(r, c) | c <- [1..9]] d g
 
 indicesOfHouse :: CellIndex -> [CellIndex]
-indicesOfHouse i = []  -- TODO: Implement
+indicesOfHouse (r0, c0) = [(r, c) | r <- rs, c <- cs]
+  where
+    rh = (r0 - 1) `div` 3
+    ch = (c0 - 1) `div` 3
+    rs = [(rh * 3 + 1)..((rh + 1) * 3)]
+    cs = [(ch * 3 + 1)..((ch + 1) * 3)]
 
 
 
