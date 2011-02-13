@@ -151,7 +151,9 @@ solveByRemovingCandidates (Puzzle g0) = Puzzle $ foldr zapCell g0 is
 cleanCells :: [CellIndex] -> Digit -> Grid -> Grid
 cleanCells is d g0 = foldr clean g0 is
   where
-    clean i g = g  -- TODO: Implement
+    clean i g = Map.update removeCandidates i g
+    removeCandidates cell =
+      Just cell {candidates = filter (d /=) (candidates cell)}
 
 cleanColumn :: ColumnIndex -> Digit -> Grid -> Grid
 cleanColumn c d g = cleanCells [(r, c) | r <- [1..9]] d g
