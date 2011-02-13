@@ -64,6 +64,7 @@ type Grid = Map CellIndex Cell
 data SolvingTechnique =
   RemovingCandidates
   | NakedSingle
+  | HiddenSingle
   -- TODO: Implement more solving techniques.
   deriving (Eq)
 
@@ -144,6 +145,7 @@ solve :: SolvingTechnique -> Puzzle -> Puzzle
 solve method
   | method == RemovingCandidates = solveByRemovingCandidates
   | method == NakedSingle = solveByNakedSingle
+  | method == HiddenSingle = solveByHiddenSingle
   | otherwise = undefined
 
 settle :: Grid -> CellIndex -> Digit -> Grid
@@ -199,6 +201,18 @@ solveByNakedSingle (Puzzle g0)
       where
         cs = candidates $ g Map.! i
         isNaked = and [not $ null cs, null $ tail cs]
+
+
+solveByHiddenSingle :: Puzzle -> Puzzle
+solveByHiddenSingle (Puzzle g0)
+  = solveByRemovingCandidates $ Puzzle $
+    zapEachRow $
+    zapEachColumn $
+    zapEachHouse g0
+  where
+    zapEachRow g = g  -- TODO: Implement.
+    zapEachColumn g = g  -- TODO: Implement.
+    zapEachHouse g = g  -- TODO: Implement.
 
 
 
