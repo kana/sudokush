@@ -160,7 +160,7 @@ solveByRemovingCandidates (Puzzle g0)
   where
     zapCell :: CellIndex -> Grid -> Grid
     zapCell i@(r, c) g
-      | d /= 0 = cleanRow r d $ cleanColumn c d $ cleanHouse i d g
+      | d /= 0 = cleanBox i d $ cleanColumn c d $ cleanRow r d g
       | otherwise = g
       where
         cell = g Map.! (r, c)
@@ -173,17 +173,17 @@ cleanCells is d g0 = foldr clean g0 is
     removeCandidates cell =
       Just cell {candidates = filter (d /=) (candidates cell)}
 
+cleanBox :: CellIndex -> Digit -> Grid -> Grid
+cleanBox i d g = cleanCells (indicesOfBox i) d g
+
 cleanColumn :: ColumnIndex -> Digit -> Grid -> Grid
 cleanColumn c d g = cleanCells [(r, c) | r <- [1..9]] d g
-
-cleanHouse :: CellIndex -> Digit -> Grid -> Grid
-cleanHouse i d g = cleanCells (indicesOfHouse i) d g
 
 cleanRow :: RowIndex -> Digit -> Grid -> Grid
 cleanRow r d g = cleanCells [(r, c) | c <- [1..9]] d g
 
-indicesOfHouse :: CellIndex -> [CellIndex]
-indicesOfHouse (r0, c0) = [(r, c) | r <- rs, c <- cs]
+indicesOfBox :: CellIndex -> [CellIndex]
+indicesOfBox (r0, c0) = [(r, c) | r <- rs, c <- cs]
   where
     rh = (r0 - 1) `div` 3
     ch = (c0 - 1) `div` 3
@@ -206,13 +206,13 @@ solveByNakedSingle (Puzzle g0)
 solveByHiddenSingle :: Puzzle -> Puzzle
 solveByHiddenSingle (Puzzle g0)
   = solveByRemovingCandidates $ Puzzle $
-    zapEachRow $
+    zapEachBox $
     zapEachColumn $
-    zapEachHouse g0
+    zapEachRow g0
   where
-    zapEachRow g = g  -- TODO: Implement.
+    zapEachBox g = g  -- TODO: Implement.
     zapEachColumn g = g  -- TODO: Implement.
-    zapEachHouse g = g  -- TODO: Implement.
+    zapEachRow g = g  -- TODO: Implement.
 
 
 
