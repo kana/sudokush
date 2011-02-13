@@ -54,6 +54,7 @@ data Cell = Cell {
     initialp :: Bool,
     candidates :: [Digit]
   }
+  deriving (Eq)
 type IndexedCell = (CellIndex, Cell)
 
 data Puzzle = Puzzle {
