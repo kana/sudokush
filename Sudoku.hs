@@ -174,7 +174,7 @@ solve method
                 then p
                 else zap s p'
       where
-        p' = s p
+        p' = solveByRemovingCandidates $ s p
 
 settle :: Grid -> CellIndex -> Digit -> Grid
 settle g i d = Map.update toSettledCell i g
@@ -221,7 +221,7 @@ indicesOfBox (r0, c0) = [(r, c) | r <- rs, c <- cs]
 
 solveByNakedSingle :: Puzzle -> Puzzle
 solveByNakedSingle (Puzzle g0)
-  = solveByRemovingCandidates $ Puzzle $ foldr zap g0 allCellIndices
+  = Puzzle $ foldr zap g0 allCellIndices
   where
     zap i g
       | isNaked = settle g i (head cs)
@@ -233,7 +233,7 @@ solveByNakedSingle (Puzzle g0)
 
 solveByHiddenSingle :: Puzzle -> Puzzle
 solveByHiddenSingle (Puzzle g0)
-  = solveByRemovingCandidates $ Puzzle $
+  = Puzzle $
     zapEachBox $
     zapEachColumn $
     zapEachRow g0
