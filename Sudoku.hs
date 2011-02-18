@@ -65,8 +65,8 @@ type Grid = Map CellIndex Cell
 
 data SolvingTechnique =
   RemovingCandidates
-  | NakedSingle
   | HiddenSingle
+  | NakedSingle
   -- TODO: Implement more solving techniques.
   deriving (Eq)
 
@@ -166,8 +166,8 @@ ppCell Cell {solution = s, candidates = cs}
 solve :: SolvingTechnique -> Puzzle -> Puzzle
 solve method
   | method == RemovingCandidates = solveByRemovingCandidates
-  | method == NakedSingle = zap solveByNakedSingle
   | method == HiddenSingle = zap solveByHiddenSingle
+  | method == NakedSingle = zap solveByNakedSingle
   | otherwise = undefined
   where
     zap s p = if p == p' 
@@ -219,18 +219,6 @@ indicesOfBox (r0, c0) = [(r, c) | r <- rs, c <- cs]
     cs = [(ch * 3 + 1)..((ch + 1) * 3)]
 
 
-solveByNakedSingle :: Puzzle -> Puzzle
-solveByNakedSingle (Puzzle g0)
-  = Puzzle $ foldr zap g0 allCellIndices
-  where
-    zap i g
-      | isNaked = settle g i (head cs)
-      | otherwise = g
-      where
-        cs = candidates $ g Map.! i
-        isNaked = and [not $ null cs, null $ tail cs]
-
-
 solveByHiddenSingle :: Puzzle -> Puzzle
 solveByHiddenSingle (Puzzle g0)
   = Puzzle $
@@ -250,6 +238,18 @@ solveByHiddenSingle (Puzzle g0)
         ic = head ics
         ics = filter withCandidate $ zip iset (map (g Map.!) iset)
         withCandidate (_, c) = d `elem` candidates c
+
+
+solveByNakedSingle :: Puzzle -> Puzzle
+solveByNakedSingle (Puzzle g0)
+  = Puzzle $ foldr zap g0 allCellIndices
+  where
+    zap i g
+      | isNaked = settle g i (head cs)
+      | otherwise = g
+      where
+        cs = candidates $ g Map.! i
+        isNaked = and [not $ null cs, null $ tail cs]
 
 
 
