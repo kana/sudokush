@@ -166,9 +166,15 @@ ppCell Cell {solution = s, candidates = cs}
 solve :: SolvingTechnique -> Puzzle -> Puzzle
 solve method
   | method == RemovingCandidates = solveByRemovingCandidates
-  | method == NakedSingle = solveByNakedSingle
-  | method == HiddenSingle = solveByHiddenSingle
+  | method == NakedSingle = zap solveByNakedSingle
+  | method == HiddenSingle = zap solveByHiddenSingle
   | otherwise = undefined
+  where
+    zap s p = if p == p' 
+                then p
+                else zap s p'
+      where
+        p' = s p
 
 settle :: Grid -> CellIndex -> Digit -> Grid
 settle g i d = Map.update toSettledCell i g
