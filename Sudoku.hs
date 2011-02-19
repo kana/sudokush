@@ -37,6 +37,7 @@ module Sudoku (
     toList,
   ) where
 
+import Data.List (tails)
 import Data.Map (Map)
 import qualified Data.Map as Map
 
@@ -89,6 +90,11 @@ allRowIndexSets = [[(r, c) | c <- [1..9]] | r <- [1..9]]
 
 allHouseIndexSets :: [[CellIndex]]
 allHouseIndexSets = allBoxIndexSets ++ allColumnIndexSets ++ allRowIndexSets
+
+combinations :: Int -> [a] -> [[a]]
+combinations 0 _ = [[]]
+combinations n xs = [y:ys | y:xs' <- tails xs,
+                            ys <- combinations (n - 1) xs']
 
 empty :: Puzzle
 empty = Puzzle $ Map.fromList [(i, (Cell 0 False [1..9]))
