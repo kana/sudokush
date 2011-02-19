@@ -96,6 +96,9 @@ combinations 0 _ = [[]]
 combinations n xs = [y:ys | y:xs' <- tails xs,
                             ys <- combinations (n - 1) xs']
 
+digitSubsets :: Int -> [[Digit]]
+digitSubsets n = combinations n [1..9]
+
 empty :: Puzzle
 empty = Puzzle $ Map.fromList [(i, (Cell 0 False [1..9]))
                                | i <- allCellIndices]
